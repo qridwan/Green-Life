@@ -14,11 +14,11 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/solid";
 import HeaderIcon from "./HeaderIcon";
-import { useSession } from "next-auth/client";
+import { signOut, useSession } from "next-auth/client";
 
-const Header = ({session}) => {
-  // const {session, user} = useSession()
-  console.log("🚀 ~ file: Header.jsx ~ line 20 ~ Header ~ session", session,)
+const Header = () => {
+  const [session, loading] = useSession();
+
   return (
     <nav className="sticky top-0 z-50 flex p-2 lg:px-5 shadow-lg">
       {/* left Side */}
@@ -43,7 +43,7 @@ const Header = ({session}) => {
 
       {/* Middle Icons */}
       <div className="flex justify-center flex-grow">
-        <div className="flex items-center space-x-4 md:space-x-6">
+        <div className="flex items-center space-x-4 ">
           <HeaderIcon Active Icon={HomeIcon} />
           <HeaderIcon Icon={FlagIcon} />
           <HeaderIcon Icon={PlayIcon} />
@@ -53,9 +53,18 @@ const Header = ({session}) => {
       </div>
 
       {/* Right Side */}
-      <div className="flex items-center sm:space-x-2 justify-end">
-        <Image className="rounded-full cursor-pointer" src={session.user.image} alt="User" height="40" width="40"/>
-        <p className="whitespace-nowrap font-semibold pr-3">Ridwan Alam</p>
+      <div className="hidden sm:inline-flex items-center sm:space-x-2 justify-end">
+        <Image
+          onClick={signOut}
+          className="rounded-full cursor-pointer"
+          src={session.user.image}
+          alt="User"
+          height="40"
+          width="40"
+        />
+        <p className=" whitespace-nowrap font-semibold pr-3">
+          {session.user.name}
+        </p>
         <ViewGridIcon className="icon" />
         <ChatIcon className="icon" />
         <BellIcon className="icon" />
